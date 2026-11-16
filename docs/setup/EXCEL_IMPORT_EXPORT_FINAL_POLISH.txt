@@ -1,0 +1,27 @@
+ST Asset Management - Excel Import / Export Final Polish
+
+Version: 1.3.0 Excel Complete + Linked Items
+
+Included:
+- Complete asset import/update workbook fields.
+- Required asset cells highlighted pink/red.
+- Optional cells highlighted light green/white.
+- Dropdown validation for categories, source, condition, status, roles and linked-item fields.
+- Frozen headers and filters.
+- Users Reference sheet with Role and Status.
+- Linked Items sheet for Loose Tools, Accessories, Components and Safety Equipment.
+- Add/update behavior keyed by Asset Code for main assets.
+- Add/update behavior keyed by Item Code, or Parent Asset + Item Name + Serial Number, for linked items.
+- Existing records are not deleted when absent from Excel.
+- Assignment/transfer/return history continues to be recorded by the asset import workflow.
+- QR tokens remain system-generated and are not manually imported.
+- CSV remains supported for the Asset Import sheet only; XLSX is required for Users Reference and Linked Items.
+
+FINAL WORKING-WORKBOOK CHANGE
+- Export now produces a populated working workbook from the current ST database, rather than a separate export-only column layout.
+- The exported Asset Import sheet exactly matches the import column order, so it can be edited and imported back without rearranging columns.
+- Existing rows are the current ST asset data.
+- New rows may be appended to add assets.
+- Asset Code remains the add/update key.
+- Missing Excel rows never delete ST records.
+- Users Reference and Linked Items are also populated from current ST data.

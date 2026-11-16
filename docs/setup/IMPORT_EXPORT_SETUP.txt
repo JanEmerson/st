@@ -1,0 +1,68 @@
+ST Asset Management - Complete Excel Import / Export
+
+ASSET IMPORT / UPDATE BEHAVIOR
+- Asset Code is the key for existing assets.
+- Existing Asset Code: update the matching asset instead of creating a duplicate.
+- New Asset Code: create a new asset as Legacy / Existing by default when Asset Source is blank.
+- Required Asset Import fields: Asset Code, Asset Name, Category, Asset Type.
+- Required cells are highlighted pink/red in the Excel template to make data entry easier.
+- Blank optional cells preserve existing database values when an Asset Code already exists.
+- The import is additive/update-only: rows missing from Excel are NOT deleted from ST.
+- Status supports Available, Assigned, Maintenance, Retired.
+- Current Employee ID OR Current Employee Name may identify the assignee. Both are optional; they do not need to be entered together.
+- If both employee fields are supplied, they must identify the same active user.
+- If an assigned employee changes on an existing asset, ST records a TRANSFERRED history entry. If an unassigned asset becomes assigned, ST records ASSIGNED.
+- Explicit Available, Maintenance, or Retired status clears current_user_id and records RETURNED history when appropriate.
+- QR tokens are generated/maintained by ST. QR URL/token fields are not imported from Excel.
+- Purchase Date and Date Added support YYYY-MM-DD and common Excel date values.
+- Purchase Cost accepts numeric values and common currency formatting.
+
+LINKED ITEMS / LOOSE TOOLS
+- The Linked Items worksheet supports items attached to a main asset, including Loose Tools.
+- Required Linked Items fields: Asset Code and Item Name.
+- Item Code is optional. When supplied, Item Code is the update key.
+- Without Item Code, ST matches an existing linked item by Parent Asset + Item Name + Serial Number.
+- Supported Item Types: Loose Tool, Accessory, Component, Safety Equipment, Included Item, Other.
+- Supported Item Status: With Asset, Removed.
+- Missing linked-item rows are NOT deleted from ST.
+- Linked items can therefore be used for vehicles and other asset types.
+
+USERS REFERENCE UPDATE
+- The XLSX Users Reference sheet (worksheet 3 in the template) is read during import.
+- Matching Employee IDs update Full Name, Status, Role, Position, and Department when values are supplied.
+- Role may be updated in the Users page OR through the Excel Role column.
+- Allowed roles: Administrator, Asset Custodian, HR / Clearance Officer, Viewer.
+- Allowed user statuses: Active, Inactive.
+- For a new employee user, Employee ID and Full Name are required. If Role is blank, ST creates the user as Viewer.
+- New users receive an automatically generated random password that is never displayed or written to Excel. Set a real login password later from Users > Edit User if the employee needs to log in.
+- The current logged-in Administrator cannot be deactivated or demoted by an Excel import.
+- Users missing from the workbook are NOT deleted.
+
+EXCEL WORKBOOK STRUCTURE
+1. Asset Import - complete editable asset register fields.
+2. Instructions - rules and safe import/update behavior.
+3. Users Reference - employee information and role/status controls.
+4. Linked Items - Loose Tools and other attached items.
+5. Reference Lists - valid dropdown values and current categories.
+
+EXCEL USABILITY
+- Required input cells are highlighted pink/red.
+- Optional input cells use a light green/white style.
+- Dropdown lists are provided for Category, Asset Source, Condition, Status, User Role, User Status, Linked Item Type, and Linked Item Status.
+- Header row is frozen and filters are enabled.
+- Columns are sized for practical data entry.
+- Dates are formatted as dates where applicable.
+- Do not delete rows to remove records. Use the ST application when a record must be retired, removed, or otherwise changed through a controlled transaction.
+
+CSV LIMITATION
+- CSV imports only process the Asset Import worksheet-equivalent columns. CSV cannot contain Users Reference or Linked Items worksheets.
+
+CURRENT DATA WORKBOOK EXPORT
+- Download Current ST Data (Excel) exports the current database records into a directly editable/re-importable workbook.
+- The Asset Import sheet uses the exact same 18-column structure accepted by the importer.
+- Existing asset rows contain the current ST values, so users can edit them directly.
+- New asset rows can be appended with a new Asset Code.
+- Asset Code already in ST = UPDATE; new Asset Code = CREATE.
+- The workbook also includes current Users Reference, Linked Items, and Reference Lists sheets.
+- QR tokens/URLs are intentionally not exported as editable import fields; ST maintains QR identification automatically.
+- The blank template remains available for users who want to prepare a workbook from scratch.

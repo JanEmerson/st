@@ -1,0 +1,12 @@
+# Prevent uploaded content from being executed or listed (Apache/XAMPP).
+Options -Indexes -ExecCGI
+<FilesMatch "(?i)\.(?:php[0-9]?|phtml|phar|cgi|pl|py|sh|asp|aspx|jsp)$">
+    Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_mime.c>
+    RemoveHandler .php .phtml .phar .php3 .php4 .php5 .php7 .php8
+    RemoveType .php .phtml .phar .php3 .php4 .php5 .php7 .php8
+</IfModule>

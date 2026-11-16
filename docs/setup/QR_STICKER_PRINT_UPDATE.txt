@@ -1,0 +1,20 @@
+ST Asset Management — QR Sticker Print Update
+
+QR labels are now formatted as a physical 50 mm × 50 mm square sticker.
+
+Print behavior:
+- @page size: 50mm × 50mm
+- @page margin: 0
+- QR default size: 32mm
+- QR resize control: 22mm–40mm
+- QR image source remains high resolution (1200px)
+- Print controls are hidden during printing
+- Label is kept as one non-splitting print block
+
+Printer recommendation:
+- Configure the printer's custom paper/media size to 50mm × 50mm.
+- Use 100% / Actual Size in the browser print dialog.
+- Set browser/printer margins to None/0 when available.
+- Disable Fit to Page / Shrink to Fit if the printer driver provides that option.
+
+If the physical sticker stock uses a different size, the CSS @page size and label dimensions should be changed to match the actual sticker media.

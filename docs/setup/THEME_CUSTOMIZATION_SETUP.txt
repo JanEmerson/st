@@ -1,0 +1,26 @@
+ST Asset Management — Theme & Final UI Polish
+
+Version 1.4.0
+
+New:
+- Settings -> Appearance & Theme
+- ST Green, Ocean Blue, Slate, Purple and Custom presets
+- Custom HEX colors for primary, primary hover, sidebar, sidebar hover and accent
+- Theme applies to the authenticated application UI and login page
+- Existing users do not need a database schema change; app_settings is generic.
+- Optional migration: database/st_db_theme_update.sql inserts the default theme settings safely.
+
+UI polish:
+- Consolidated asset creation into one Add Asset entry point.
+- Legacy / Existing is selected as Asset Source inside the same asset form.
+- Clearance search field uses a responsive full-width layout.
+- Theme controls are responsive and preserve dark/light mode.
+
+Recommended:
+1. Open Settings -> Appearance & Theme.
+2. Select a preset or Custom.
+3. Save Appearance.
+4. Reload the page or navigate to another page to confirm the theme.
+
+
+Release 1.4.0: per-user appearance settings are stored in users; Administrator default remains in app_settings. Login background is Administrator-only and global.

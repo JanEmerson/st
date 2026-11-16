@@ -1,0 +1,22 @@
+ST Asset Management System — Release 1.5.0
+User-Friendly UX Update
+
+1. Search & Filters
+- Shared filter panels are collapsible and hidden by default.
+- Pages with active GET filters automatically open the panel.
+- Open/closed state is remembered per page during the current browser session.
+
+2. Asset Assignments
+- Export Excel is inside the filter panel.
+- Export uses the same search condition as the visible assignment list.
+- The workbook contains Assignment List and Summary sheets.
+- Export is read-only and does not change database records.
+
+3. Responsive behavior
+- Filter controls stack on small screens.
+- Tables remain readable using horizontal scrolling where required.
+- Focus states and reduced-motion behavior are supported.
+
+4. Compatibility
+- No database migration is required.
+- Existing assets, users, history, QR, Excel import/export, printouts and permissions are preserved.

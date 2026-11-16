@@ -1,0 +1,20 @@
+ST Asset Management System — Release 1.6.0
+Non-Technical User Experience Pass
+
+1. Dashboard Quick Actions
+- Added task-oriented shortcuts for common work: find/add/assign/transfer/return/maintenance/history/clearance.
+- Added a visible Help shortcut to the User Guide.
+
+2. Transaction Guidance
+- Assignment, Transfer, Turnover and Maintenance forms now show a simple step-by-step transaction strip.
+- Each transaction explains what changes after confirmation.
+
+3. Asset Registration Guidance
+- Added plain-language explanations for Asset Code, Asset Source, Condition and Status.
+
+4. Global Help
+- Added a Help link in the top bar so users can reach the Simple User Guide without opening the sidebar.
+
+5. Compatibility
+- UI/UX only. No database migration required.
+- Existing roles, permissions, workflows, history, QR, images, Excel, and print functions are preserved.

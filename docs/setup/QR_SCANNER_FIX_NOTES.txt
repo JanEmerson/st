@@ -1,0 +1,16 @@
+ST Asset Management - QR Scanner Fix
+
+Fixed:
+- Removed automatic getUserMedia camera request on page load.
+- Added a real mobile camera/photo capture input using capture="environment".
+- Added jsQR-based decoding of captured photos.
+- Added retry using a center crop for photos where the QR occupies a smaller area.
+- Added validation so only ST asset_scan.php QR URLs with a token are opened.
+- Kept live webcam scanning for HTTPS environments using jsQR instead of BarcodeDetector.
+- HTTP LAN mode now clearly directs users to the phone-camera capture method.
+- Manual QR URL remains available.
+
+Important:
+- Live webpage camera requires HTTPS in modern browsers.
+- The HTTP/LAN capture method uses the phone OS camera UI and then decodes the captured image in the browser.
+- jsQR is loaded from jsDelivr, so the phone needs internet access to load the decoder unless jsQR is later bundled locally.

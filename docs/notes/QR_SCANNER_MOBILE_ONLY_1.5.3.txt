@@ -1,0 +1,16 @@
+ST Asset Management System - QR Scanner Mobile-Only Fix
+
+Base version: ST Asset Management 1.5.3 Compact Tables
+Scope: QR Scanner behavior only.
+
+Changes:
+- QR Scanner is shown in the sidebar only when the browser user-agent is detected as a mobile device.
+- Direct desktop access to frontend/pages/qr_scanner.php shows a simple mobile-only notice instead of loading the camera scanner.
+- The QR scanner itself remains unchanged from the current QR scanner implementation.
+- No database changes are required.
+
+Important localhost note:
+- If the application is truly hosted only at http://localhost/st on a Windows PC,
+  a separate phone cannot reach that PC through localhost. The mobile scanner UI
+  will appear when the app is opened on a mobile browser, but the mobile browser
+  must be able to reach the ST server before camera scanning can open asset pages.

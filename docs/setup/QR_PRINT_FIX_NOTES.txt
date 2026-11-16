@@ -1,0 +1,23 @@
+ST Asset Management System - QR Print Fix
+
+Updated: 2026-09-29
+
+What was fixed:
+- Fixed the QR label print layout that could clip the QR code because the previous fixed 48 mm QR did not leave enough vertical space on a 70 x 90 mm label.
+- The QR source image is now requested at 1200 x 1200 so it stays sharp when resized.
+- Added a QR Code Size slider on the print preview page.
+- QR size can be adjusted from 28 mm to 48 mm before clicking Print Label.
+- Default QR size is 40 mm, designed to fit the 70 x 90 mm label together with the app name, asset code, and asset name.
+- Print CSS hides controls/navigation and prevents the QR label from being split across pages.
+- Printing waits until the QR image has fully loaded and gives the browser an extra paint cycle before opening the print dialog.
+- If the QR image fails to load, Print Label is disabled instead of producing a broken/cut-off print.
+
+Usage:
+1. Open Asset Details.
+2. Click Print QR Label.
+3. On the QR print preview page, adjust QR Code Size if needed.
+4. Click Print Label.
+5. In the browser print preview, use the printer's normal paper/scale settings. Keep the browser scale at 100% when using a physical 70 x 90 mm label unless your printer requires another setting.
+
+Note:
+The browser's native print dialog cannot be resized by the website itself. The QR size is therefore adjustable on the print-preview page immediately before the print dialog opens.

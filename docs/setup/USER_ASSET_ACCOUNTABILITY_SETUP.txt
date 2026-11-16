@@ -1,0 +1,51 @@
+ST Asset Management - User Assigned Asset Report
+=================================================
+
+Release: 1.4.7
+
+FEATURE
+-------
+Administrator users now have two additional actions in Users -> User Accounts:
+
+1. Assets [count]
+   Opens the employee's current assigned asset list.
+
+2. Excel
+   Downloads an XLSX report containing the employee's currently assigned assets.
+
+The report is generated from assets.current_user_id, so it represents CURRENT
+accountability only. Historical assignments, transfers and turnovers remain in
+asset_history and are not deleted or changed by this report feature.
+
+FILES
+-----
+frontend/pages/users.php
+    Adds the assigned asset count and the Assets / Excel actions.
+
+frontend/pages/user_assets.php
+    Displays the current assigned asset list for one employee.
+
+frontend/pages/user_assets_export.php
+    Generates and downloads the employee-specific XLSX report.
+
+backend/includes/user_asset_report.php
+    Shared database queries and Excel row preparation used by both pages.
+
+frontend/css/style.css
+    Adds responsive styling for the user action buttons and assigned-asset count.
+
+PERMISSION
+----------
+The feature is Administrator-only, matching the existing Users module permission.
+
+DEBUGGING ORDER
+---------------
+If the count is incorrect:
+    1. Check assets.current_user_id in the database.
+    2. Check backend/includes/user_asset_report.php.
+    3. Confirm the selected users.id matches the URL id parameter.
+
+If the Excel download fails:
+    1. Check PHP syntax for user_assets_export.php.
+    2. Check backend/includes/xlsx_helper.php.
+    3. Confirm the PHP process can write to the system temporary directory.

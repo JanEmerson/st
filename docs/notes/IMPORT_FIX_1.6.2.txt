@@ -1,0 +1,10 @@
+ST Asset Management System - Import Fix 1.6.2
+
+Issue fixed:
+The import page previously assumed that the Users Reference worksheet was always worksheet 3 and Linked Items was always worksheet 4. The bundled legacy template had those sheets in a different order, so importing that template could skip Users Reference and interpret the wrong worksheet as Linked Items.
+
+Fix:
+XLSX import now identifies Users Reference and Linked Items worksheets by their header columns instead of relying on worksheet numbers. This supports the current ST export workbook, the bundled legacy template, and workbooks whose supporting sheets have been reordered in Excel.
+
+No change to CSV behavior:
+CSV still imports only the Asset Import columns.

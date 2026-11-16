@@ -1,0 +1,60 @@
+ST Asset Management System
+BRANDING + USER PROFILE FEATURE
+===============================
+
+1. EXISTING DATABASE
+   Import:
+   database/st_db_branding_profile_update.sql
+
+   This adds:
+   - users.avatar_filename
+   - app_settings table
+
+2. APPLICATION BRANDING
+   Administrator -> Settings -> Application Branding
+
+   You can:
+   - Rename the application (2-100 characters)
+   - Upload a JPG/JPEG/PNG/WEBP logo
+   - Remove the current logo
+   - Maximum logo size: 2 MB
+
+   The configured application name/logo is used by:
+   - Login page
+   - Sidebar
+   - Top bar
+   - Browser page title
+   - Printable assignment, transfer, turnover, and clearance forms
+
+3. USER PROFILE PICTURE
+   Every signed-in user has:
+   My Profile -> Profile Picture
+
+   Users can:
+   - Upload a profile picture/avatar
+   - Remove their profile picture
+
+   Administrators can also upload a user's profile picture from:
+   Users -> Edit User
+
+   Supported formats:
+   - JPG / JPEG
+   - PNG
+   - WEBP
+
+   Maximum size: 2 MB
+
+4. UPLOAD FOLDERS
+   The application uses:
+   uploads/app
+   uploads/avatars
+
+   These folders include an Apache .htaccess file to prevent PHP-like
+   scripts from being executed from the image upload directories.
+
+5. NEW INSTALLATION
+   database/st_db_install.sql already includes the branding/profile database fields.
+
+6. IMPORTANT
+   For an existing installation, import the migration SQL before using
+   the new Settings or My Profile features.

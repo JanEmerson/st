@@ -1,0 +1,25 @@
+ST Asset Management System — Personal Appearance + Login Background (Release 1.4.0)
+
+WHAT CHANGED
+1. Every user can customize their own theme from My Profile → My Appearance.
+2. Theme colors and Light/Dark/System mode are stored in the users table, so User A's choices do not change User B's UI.
+3. Users may choose “Use Company Default” to inherit the Administrator's default theme.
+4. The Administrator controls the Company Default theme in Settings → Default Appearance & Theme.
+5. Only the Administrator can upload/remove the global Login Background in Settings → Login Background.
+6. The login background is shared because users are not authenticated yet; after login, each user receives their own stored appearance.
+7. Recommended login background: JPG/PNG/WEBP, 1920×1080 or higher, maximum 8 MB.
+
+EXISTING DATABASE
+Import: database/st_db_user_appearance_login_background_update.sql
+This adds per-user appearance columns and the global login_background_filename setting.
+
+FRESH INSTALL
+database/st_db_install.sql already contains the new columns/settings.
+
+UPLOAD DIRECTORY
+uploads/app/login-background/ is protected from PHP execution.
+
+BEHAVIOR
+Login page = Administrator-controlled global branding/default theme + global background.
+After login = authenticated user's own theme overrides the default.
+Changing one user's theme does not change other users.

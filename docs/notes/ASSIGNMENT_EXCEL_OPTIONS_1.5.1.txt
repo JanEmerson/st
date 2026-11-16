@@ -1,0 +1,16 @@
+ST Asset Management System — Release 1.5.1
+Assignment Excel Export Options
+
+Added a responsive Export Excel options popover to Asset Assignments.
+
+Optional export content:
+- Purchase price / purchase cost and total value
+- Supplier, purchase number and purchase date
+- Condition and asset description
+- Loose tools / linked items on a separate worksheet, including quantity
+- Assignment date, assigned by and assignment remarks
+
+The main Assignment List keeps one row per assigned asset. Linked items are separated into a Loose Tools & Items worksheet so quantities do not duplicate asset rows.
+
+Exports continue to respect the active search filter and do not modify database records.
+No database migration is required.

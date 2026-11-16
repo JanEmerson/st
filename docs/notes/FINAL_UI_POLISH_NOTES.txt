@@ -1,0 +1,22 @@
+ST Asset Management System - Final UI Polish Update
+
+Changes in this package:
+1. Assets page
+   - Removed the redundant '+ Add Asset + Asset Source = Legacy / Existing' button.
+   - '+ Add Asset' is now the single asset-creation entry point.
+   - Legacy assets remain supported through Asset Source = 'Legacy / Existing' in the same Add Asset form.
+   - Existing import/export legacy workflow is unchanged.
+
+2. Clearance page
+   - Reworked the employee search layout for a proper responsive form.
+   - Search input now expands to use available desktop width.
+   - Search and Reset buttons are aligned consistently.
+   - Mobile layout stacks the field and actions cleanly.
+   - Updated placeholder to 'Employee ID, name or department...'.
+   - Added matching light/dark-mode input and label contrast.
+
+3. Validation
+   - All PHP files pass php -l.
+   - frontend/js/app.js passes node --check.
+
+No database schema changes are required for these UI-only changes.

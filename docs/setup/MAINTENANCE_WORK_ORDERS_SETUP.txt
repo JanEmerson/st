@@ -1,0 +1,30 @@
+ST Asset Management System - Maintenance Work Orders
+====================================================
+
+INSTALLATION
+------------
+1. Back up the st_db database.
+2. Import database/st_db_maintenance_work_orders_update.sql into MySQL/MariaDB.
+3. Ensure PHP can write to uploads/app/maintenance. The application creates this
+   directory when the first attachment is uploaded.
+
+WORKFLOW
+--------
+- Administrator and Asset Custodian roles can create and update work orders.
+- A work order can be opened for an unassigned Available or Maintenance asset.
+- Opening an order sets the asset status to Maintenance and prevents assignment.
+- Completing an order returns the asset to Available. Cancelling restores its
+  prior eligible status. If the asset is retired while the order is active,
+  closing the order preserves Retired.
+- Assigned and Retired assets cannot be opened for maintenance; return an
+  assigned asset through Turnovers first.
+- Completed and Cancelled work orders are closed. Their service and status
+  history remains available from the work order.
+- Active work orders block standard assignments and Excel-import changes to
+  the asset's status or accountability. Asset Edit also locks the status while
+  allowing other asset details to be updated.
+- Attachments are limited to PDF, JPG, PNG, and WEBP files up to 5 MB and are
+  served only through the authenticated application page.
+
+The migration adds maintenance_records and maintenance_history without
+changing existing assets or transaction history.

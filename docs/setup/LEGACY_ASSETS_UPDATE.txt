@@ -1,0 +1,53 @@
+ST Asset Management System
+Legacy / Existing Assets Update
+
+WHAT IS NEW
+- Add Asset + Asset Source = Legacy / Existing shortcut on the Assets page.
+- Asset Source field: New Purchase, Legacy / Existing, Donated, Transferred, Other.
+- Current Condition field: New, Good, Fair, Poor, Damaged.
+- Legacy / Previous Reference field for old property/SAP/reference numbers.
+- Date Added to ST field.
+- Assets page source filter and legacy-reference search.
+- Asset Details shows the new legacy/source information.
+- Dashboard shows the Legacy / Existing count.
+- User Guide and PDF manual updated.
+- Existing assignment, transfer, turnover, history, and clearance workflows remain unchanged.
+- Disposal is NOT included in this phase.
+
+IMPORTANT FOR AN EXISTING INSTALLATION
+1. Back up your st_db database first.
+2. Copy/replace the project folder with this updated ZIP.
+3. Open phpMyAdmin and select st_db.
+4. Open and run: database/st_db_legacy_assets_update.sql
+5. Then open http://localhost/st/
+
+The migration file does not delete existing asset records. It adds the new fields and fills Date Added to ST from the existing created_at date when it was previously empty.
+
+FOR A NEW INSTALLATION
+Use database/st_db_install.sql. It already contains the new legacy fields and the asset_images table.
+
+LEGACY ASSET ENTRY
+1. Open Assets.
+2. Click Add Asset + Asset Source = Legacy / Existing.
+3. Fill in the normal asset information.
+4. Confirm Asset Source = Legacy / Existing.
+5. Select the current condition.
+6. Enter the old/SAP/property reference if available.
+7. Enter the Date Added to ST.
+8. Save.
+
+NOTES
+- Old assets remain normal assets in the same assets table.
+- A legacy reference is optional because some historical records may not have a reference number.
+- Legacy assets can still be assigned, transferred, returned, searched, included in history, and included in clearance.
+- Disposal will be implemented later as the final phase.
+
+FINAL POLISH - SPELLING ASSIST
+==============================
+The shared frontend now provides:
+- Native browser spellcheck on normal text fields.
+- Lightweight offline spelling suggestions for common asset-management terms.
+- Press TAB while a suggestion is shown to accept the suggestion and continue to the next field.
+- ESC dismisses the suggestion.
+- Identifier fields such as asset codes, serial numbers, employee IDs and usernames are left alone so codes are not changed.
+- The spelling helper requires no internet connection or third-party service.

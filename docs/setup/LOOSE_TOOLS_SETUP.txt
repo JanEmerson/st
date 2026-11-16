@@ -1,0 +1,15 @@
+ST Asset Management - Linked Items / Loose Tools
+
+Feature:
+- A main asset can have linked items such as Loose Tools, Accessories, Components, Safety Equipment, Included Items, or Other.
+- Linked items stay attached to the main asset.
+- Removing an item marks it Removed instead of deleting it, preserving audit history.
+- Active linked items appear on Asset Details and on Assignment, Transfer, and Turnover printouts.
+- Use Asset Details -> Manage Linked Items.
+
+Existing database:
+1. Backup st_db.
+2. Run database/st_db_linked_items_update.sql once.
+
+Fresh installation:
+- database/st_db_install.sql now includes the asset_linked_items table.

@@ -1,0 +1,30 @@
+ST Asset Management - Current Data Excel Working Workbook Update
+
+Release: 1.4.3
+
+WHAT CHANGED
+The Excel Export feature now creates a populated, directly editable working workbook using the current ST database records.
+
+WORKFLOW
+1. Open ST -> Import / Export.
+2. Click "Download Current ST Data (Excel)".
+3. The workbook contains the current Asset Register data from ST.
+4. Edit an existing row to update an asset. Keep the existing Asset Code.
+5. Add a new row with a new Asset Code to create a new asset.
+6. Save the workbook.
+7. Return to ST -> Import / Export -> Import Assets.
+8. Import the same workbook.
+
+SAFE BEHAVIOR
+- Existing Asset Code -> UPDATE.
+- New Asset Code -> CREATE.
+- Blank optional cells preserve existing values during an update.
+- Rows missing from Excel are NOT deleted from ST.
+- QR tokens/URLs are maintained automatically by ST and are not editable import fields.
+- Users Reference contains current employee data.
+- Linked Items contains current linked/loose-tool data.
+- Reference Lists contains current dropdown values.
+- Passwords are never exported or imported.
+
+BLANK TEMPLATE
+The "Download Blank Template" button remains available for starting a workbook from scratch.

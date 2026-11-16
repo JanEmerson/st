@@ -1,0 +1,15 @@
+ST Asset Management System - User Assigned Assets Validation
+Release: 1.4.7
+
+PHP syntax: PASS (all PHP files)
+JavaScript syntax: PASS (frontend/js/app.js when Node.js is available)
+XLSX helper generation test: PASS
+Generated XLSX ZIP integrity: PASS
+
+Feature:
+- Users table shows current assigned asset count.
+- Assets action opens the current assigned asset list.
+- Excel action downloads an employee-specific XLSX report.
+- Report uses assets.current_user_id for current accountability.
+- Historical assignment/transfer/turnover records remain in asset_history.
+- Feature is Administrator-only.

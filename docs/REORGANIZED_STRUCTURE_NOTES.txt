@@ -1,0 +1,18 @@
+ST Asset Management System — Reorganized Structure
+
+This package reorganizes supporting files without changing the application database schema.
+
+Moved:
+- SQL scripts -> database/
+- Setup/release notes -> docs/setup/ and docs/notes/
+- User manual -> docs/manual/
+- Validation reports -> docs/reports/
+- Excel template -> templates/
+- Browser icons -> frontend/assets/icons/
+
+Public URLs were updated for the moved manual and browser icons.
+
+Important:
+- Preserve uploads/ when replacing an existing installation.
+- Do not import a fresh install SQL over a database that contains live data.
+- Run migration SQL only when the specific feature requires it and only once per database.

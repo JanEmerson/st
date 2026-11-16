@@ -1,0 +1,944 @@
+1. Complete Folder Structure
+
+Your current project is organized like this:
+
+C:\xampp\htdocs\st
+│
+├── index.php
+├── login.php
+│
+├── frontend
+│   │
+│   ├── css
+│   │   └── style.css
+│   │
+│   ├── js
+│   │   └── app.js
+│   │
+│   └── pages
+│       │
+│       ├── dashboard.php
+│       │
+│       ├── assets.php
+│       ├── asset_add.php
+│       ├── asset_edit.php
+│       └── asset_view.php
+│       │
+│       ├── categories.php
+│       ├── category_add.php
+│       ├── category_edit.php
+│       └── category_delete.php
+│       │
+│       ├── assignments.php
+│       ├── assignment_add.php
+│       ├── assignment_save.php
+│       ├── assignment_print.php
+│       │
+│       ├── transfers.php
+│       ├── transfer_add.php
+│       ├── transfer_save.php
+│       ├── transfer_print.php
+│       │
+│       ├── turnovers.php
+│       ├── turnover_add.php
+│       ├── turnover_save.php
+│       ├── turnover_print.php
+│       │
+│       ├── history.php
+│       │
+│       ├── clearance.php
+│       ├── clearance_print.php
+│       │
+│       ├── users.php
+│       ├── user_add.php
+│       ├── user_edit.php
+│       │
+│       ├── settings.php
+│       └── change_password.php
+│
+├── backend
+│   │
+│   ├── config
+│   │   └── database.php
+│   │
+│   ├── auth
+│   │   ├── login.php
+│   │   └── logout.php
+│   │
+│   └── includes
+│       ├── auth_check.php
+│       ├── header.php
+│       ├── sidebar.php
+│       └── footer.php
+│
+└── database
+    └── [database SQL files, if saved]
+
+create_admin.php was only a temporary setup file and should already have been deleted after creating the administrator account.
+
+2. Database
+
+Database name:
+
+st_db
+
+Structure:
+
+st_db
+│
+├── users
+├── categories
+├── assets
+├── asset_images
+└── asset_history
+3. Users Table
+
+Stores all system users/employees who can log in or receive assets.
+
+users
+├── id
+├── employee_id
+├── username
+├── password
+├── full_name
+├── department
+├── position
+├── role
+├── status
+├── created_at
+└── updated_at
+Roles
+
+There are four:
+
+Administrator
+Asset Custodian
+HR / Clearance Officer
+Viewer
+Status
+Active
+Inactive
+
+There is intentionally no email field/system.
+
+4. Categories Table
+categories
+├── id
+├── name
+├── description
+└── created_at
+
+Current categories:
+
+1. IT Equipment
+2. Office Supplies
+3. Vehicles
+5. Assets Table
+
+This is the main inventory table.
+
+assets
+├── id
+├── asset_code
+├── asset_name
+├── category_id
+├── asset_type
+├── serial_number
+├── supplier_name
+├── purchase_number
+├── purchase_date
+├── purchase_cost
+├── asset_source
+├── condition_status
+├── legacy_reference
+├── date_added
+├── status
+├── current_user_id
+├── description
+├── created_at
+└── updated_at
+Asset statuses
+Available
+Assigned
+Maintenance
+Retired
+
+Important rule:
+
+Assignment, Transfer, and Turnover control accountability/status.
+
+For example:
+
+Available
+   ↓
+Assigned
+   ↓
+Transferred
+   ↓
+Transferred
+   ↓
+Returned
+   ↓
+Available
+
+The previous employee assignments are not overwritten because they remain in asset_history.
+
+6. Asset History
+
+This is one of the most important parts of the system.
+
+asset_history
+├── id
+├── asset_id
+├── action
+├── from_user_id
+├── to_user_id
+├── performed_by
+├── transaction_date
+├── condition_status
+└── remarks
+
+Actions:
+
+ASSIGNED
+TRANSFERRED
+RETURNED
+
+This allows you to see the complete history of an asset.
+
+Example:
+
+Laptop LT-001
+
+01/01/2026
+ASSIGNED
+→ Juan Dela Cruz
+
+05/03/2026
+TRANSFERRED
+Juan Dela Cruz
+→ Pedro Santos
+
+10/06/2026
+TRANSFERRED
+Pedro Santos
+→ Maria Cruz
+
+20/08/2026
+RETURNED
+Maria Cruz
+→ Available
+
+The history remains intact.
+
+7. Login / Authentication
+
+The system has:
+
+login.php
+
+and backend authentication:
+
+backend/auth/login.php
+backend/auth/logout.php
+
+Passwords are stored using PHP password hashing.
+
+The login system checks:
+
+Username
+Password
+Account status
+Session
+
+Inactive users cannot log in.
+
+Session protection is implemented through:
+
+backend/includes/auth_check.php
+8. Administrator Account
+
+The initial administrator was created with:
+
+Employee ID: ADMIN-001
+Username: admin
+Full Name: System Administrator
+Department: Administration
+Position: Administrator
+Role: Administrator
+Status: Active
+
+The original temporary password was:
+
+admin123
+
+You have also completed the Change Password feature, so the password can now be changed from Settings.
+
+9. Role Permissions
+Administrator
+
+Full access:
+
+Dashboard
+Assets
+Categories
+Assignments
+Transfers
+Turnovers
+History
+Clearance
+Users
+Settings
+Logout
+
+Can manage users and system settings.
+
+Asset Custodian
+
+Can access:
+
+Dashboard
+Assets
+Categories
+Assignments
+Transfers
+Turnovers
+History
+Print Forms
+Logout
+
+Cannot manage:
+
+Users
+Settings
+HR / Clearance Officer
+
+Can access:
+
+Dashboard
+Assets
+Categories
+History
+Turnovers
+Clearance
+Print Forms
+Logout
+
+They cannot perform:
+
+Assignments
+Transfers
+User Management
+Settings
+Viewer
+
+Read-only access:
+
+Dashboard
+Assets
+Categories
+History
+Logout
+
+No modification functions.
+
+10. Dashboard
+
+The dashboard is connected to the actual database.
+
+It provides information such as:
+
+Asset counts
+Asset status
+Recent activity/history
+System overview
+
+It is not just static/sample information.
+
+11. Asset Management
+
+Completed files:
+
+assets.php
+asset_add.php
+asset_edit.php
+asset_view.php
+
+Features include:
+
+Add assets
+Edit assets
+View asset details
+Search/list assets
+Category
+Asset type
+Serial number
+Supplier
+Purchase information
+Cost
+Asset source (including Legacy / Existing)
+Current condition
+Legacy / previous reference
+Date added to ST
+Status
+Current accountable employee
+Description
+Asset history
+
+The asset detail page also shows transaction history.
+
+12. Category Management
+
+Completed:
+
+categories.php
+category_add.php
+category_edit.php
+category_delete.php
+
+Features:
+
+Add category
+Edit category
+Delete category
+Category description
+Asset count
+
+Important safety rule:
+
+A category being used by an asset cannot simply be deleted because of the foreign-key relationship.
+
+13. User Management
+
+Completed:
+
+users.php
+user_add.php
+user_edit.php
+
+Administrator-only.
+
+Features:
+
+Add employee/user
+Edit user
+Employee ID
+Username
+Password
+Full name
+Department
+Position
+Role
+Active/Inactive status
+
+Inactive users cannot log in.
+
+14. Asset Assignment
+
+Completed:
+
+assignments.php
+assignment_add.php
+assignment_save.php
+assignment_print.php
+
+Assignment process:
+
+Available Asset
+       ↓
+Select Employee
+       ↓
+Condition
+       ↓
+Remarks
+       ↓
+Confirm Assignment
+       ↓
+Asset becomes Assigned
+       ↓
+Current employee is recorded
+       ↓
+ASSIGNED history created
+
+The database transaction uses locking to prevent conflicting assignment operations.
+
+15. Asset Transfer
+
+Completed:
+
+transfers.php
+transfer_add.php
+transfer_save.php
+transfer_print.php
+
+Process:
+
+Employee A
+     ↓
+Current Asset
+     ↓
+Transfer
+     ↓
+Employee B
+     ↓
+Asset remains Assigned
+     ↓
+History records:
+A → B
+
+The previous employee is preserved in history.
+
+16. Asset Turnover / Return
+
+Completed:
+
+turnovers.php
+turnover_add.php
+turnover_save.php
+turnover_print.php
+
+Process:
+
+Assigned Asset
+      ↓
+Current Employee
+      ↓
+Turnover / Return
+      ↓
+Condition
+      ↓
+Remarks
+      ↓
+Asset becomes Available
+      ↓
+current_user_id = NULL
+      ↓
+RETURNED history created
+17. Asset History
+
+Completed:
+
+history.php
+
+It displays:
+
+Asset
+Action
+Previous employee
+New employee
+Person who performed the transaction
+Date
+Condition
+Remarks
+
+The history page also correctly links the transaction to the actual asset_id.
+
+18. Printable Forms
+
+We have completed four major printable documents.
+
+Assignment Form
+assignment_print.php
+
+Contains asset and assignment information plus signatures.
+
+Transfer Form
+transfer_print.php
+
+Contains:
+
+Previous Employee
+New Employee
+Asset Information
+Transfer Details
+Remarks
+Signatures
+Turnover Form
+turnover_print.php
+
+Contains:
+
+Returning Employee
+Asset Information
+Return Details
+Condition
+Remarks
+Signatures
+Employee Clearance / Asset Accountability
+clearance_print.php
+
+Shows an employee's currently assigned assets and provides clearance/signature sections.
+
+All four have been tested and confirmed working.
+
+19. Clearance Management
+
+Completed:
+
+clearance.php
+clearance_print.php
+
+The clearance page searches employees and checks their currently assigned assets.
+
+Logic:
+
+Employee has assigned assets
+        ↓
+   NOT CLEARED
+
+Employee has zero assigned assets
+        ↓
+     CLEARED
+
+The system can then generate the printable clearance/accountability form.
+
+20. Settings
+
+Completed:
+
+settings.php
+
+Administrator-only.
+
+Currently displays:
+
+System Information
+System Name
+ST Asset Inventory System
+
+Version
+1.0.0
+
+Database
+st_db
+
+Environment
+Localhost / XAMPP
+Current Account
+
+Displays:
+
+Employee ID
+Full Name
+Username
+Department
+Position
+Role
+Status
+Security
+
+Contains:
+
+Change Password
+21. Change Password
+
+Completed:
+
+change_password.php
+
+It verifies:
+
+Current password
+New password length
+Confirmation password
+New password isn't the same as the old password
+
+Then securely hashes the new password using:
+
+password_hash()
+
+The feature has been tested and confirmed working.
+
+22. Sidebar
+
+The sidebar currently contains:
+
+Dashboard
+Assets
+Categories
+Assignments
+Transfers
+Turnovers
+History
+Clearance
+Users
+Settings
+Logout
+
+The displayed menu changes according to the logged-in user's role.
+
+More importantly, permissions are also enforced server-side, rather than relying only on hiding sidebar links.
+
+23. Shared Layout
+
+These files handle the common interface:
+
+backend/includes/header.php
+backend/includes/sidebar.php
+backend/includes/footer.php
+
+This prevents every page from having to duplicate the entire navigation/layout.
+
+24. CSS / JavaScript
+
+Frontend resources:
+
+frontend/css/style.css
+frontend/js/app.js
+
+The system uses a shared stylesheet for the dashboard, tables, cards, forms, buttons, sidebar, status badges, etc.
+
+25. Legacy / Existing Assets
+
+Old assets are stored in the same assets table as other assets. Use Assets → Add Asset + Asset Source = Legacy / Existing when entering an existing/old asset manually.
+
+Record when available:
+- Asset Source = Legacy / Existing
+- Current Condition = New, Good, Fair, Poor, or Damaged
+- Legacy / Previous Reference = old property, SAP, or other reference number
+- Date Added to ST = date the record was entered into this system
+
+A legacy reference is optional because some old records may not have an available SAP/property reference.
+
+Use the Asset Source filter on the Assets page to locate legacy records. Legacy assets continue to use the normal assignment, transfer, turnover, history, and clearance workflow. Disposal is intentionally not included in this phase.
+
+26. Current Asset Types
+
+The planned asset types are:
+
+IT Equipment
+Laptop
+Desktop Computer
+Monitor
+Printer
+Keyboard
+Mouse
+Router
+UPS
+Projector
+Office Supplies
+Office Chair
+Office Desk
+Filing Cabinet
+Telephone
+Stapler
+Whiteboard
+Vehicles
+Car
+Van
+Motorcycle
+Truck
+
+These are conceptual asset types; they don't necessarily need their own database table because asset_type is currently stored in assets.
+
+27. Main System Workflow
+
+The overall system now works approximately like this:
+
+                    ┌──────────────┐
+                    │    LOGIN     │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │  DASHBOARD   │
+                    └──────┬───────┘
+                           │
+        ┌──────────────────┼───────────────────┐
+        │                  │                   │
+        ▼                  ▼                   ▼
+     ASSETS            USERS              CATEGORIES
+        │
+        ▼
+     AVAILABLE
+        │
+        ▼
+    ASSIGNMENT
+        │
+        ▼
+     ASSIGNED
+        │
+        ▼
+     TRANSFER
+        │
+        ▼
+     ASSIGNED
+        │
+        ▼
+     TURNOVER
+        │
+        ▼
+     AVAILABLE
+        │
+        ▼
+      HISTORY
+
+At the same time:
+
+Employee
+    │
+    ▼
+Clearance
+    │
+    ├── Has assigned assets → NOT CLEARED
+    │
+    └── No assigned assets → CLEARED
+28. What Is Left
+
+The core system is essentially complete. 🎉
+
+The next phase should be testing and hardening, rather than immediately adding more features.
+
+I'd recommend this order:
+
+PHASE 1
+Full role/permission testing
+        ↓
+PHASE 2
+Test every asset workflow
+        ↓
+PHASE 3
+Test print forms
+        ↓
+PHASE 4
+Fix security/redirect issues
+        ↓
+PHASE 5
+UI cleanup / professional styling
+        ↓
+PHASE 6
+Backup/export/database safety
+        ↓
+PHASE 7
+Final testing
+One known technical item
+
+We should fix this eventually in:
+
+backend/includes/auth_check.php
+
+The redirect should use the absolute project path:
+
+header("Location: /st/login.php");
+exit;
+
+rather than a relative path, because pages inside:
+
+frontend/pages/
+
+can otherwise resolve ../login.php incorrectly.
+
+🏁 Overall Status
+
+ST Asset Inventory System: Core development COMPLETE ✅
+
+You now have a functional local asset-management system covering:
+
+Inventory → Assignment → Transfer → Turnover → History → Clearance → Printable Documentation → User Management → Settings → Authentication.
+
+The next sensible step is a complete testing checklist, where we go through each role and each workflow one by one and mark anything that needs fixing.
+
+
+
+
+
+
+http://localhost/st/backend/auth/create_admin.php
+
+
+
+
+CREATE TABLE asset_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    asset_id INT NOT NULL,
+
+    image_filename VARCHAR(255) NOT NULL,
+
+    image_original_name VARCHAR(255),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_asset_images_asset
+        FOREIGN KEY (asset_id)
+        REFERENCES assets(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
+
+
+---------------------------------------------------------------------
+
+
+USE st_db;
+
+CREATE TABLE IF NOT EXISTS asset_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    asset_id INT NOT NULL,
+    image_filename VARCHAR(255) NOT NULL,
+    image_original_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_asset_images_asset
+        FOREIGN KEY (asset_id)
+        REFERENCES assets(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
+
+
+
+============================================================
+BRANDING + USER PROFILE FEATURE
+============================================================
+Administrator: Settings -> Application Branding
+- Rename the application (2-100 characters).
+- Upload JPG/JPEG/PNG/WEBP application logo, max 2 MB.
+- Remove the current logo when needed.
+
+All users: My Profile
+- Upload or remove a profile picture/avatar.
+- JPG/JPEG/PNG/WEBP, max 2 MB.
+
+The application name/logo is reflected in the sidebar, top bar, login page,
+browser title, and printable transaction/clearance forms.
+
+29. Excel Import / Export
+
+Completed:
+
+frontend/pages/asset_import_export.php
+backend/includes/xlsx_helper.php
+
+Administrator and Asset Custodian can: 
+- Download an Excel legacy-asset import template
+- Import .xlsx or .csv asset records in bulk
+- Export the complete asset register to .xlsx
+- See row-by-row import errors without losing successful rows
+
+Import defaults:
+- Asset Source = Legacy / Existing
+- Condition = Good
+- Date Added = current date
+- Status = Available
+
+Existing Asset Codes and Serial / Plate Numbers are rejected to protect against duplicates.
+Assignment is intentionally kept in the normal Assignments module so accountability history is recorded correctly.
+QR URLs are included in asset exports when QR is enabled.
+
+30. Sidebar Navigation
+
+The sidebar is grouped for easier navigation:
+- Overview
+- Asset Management
+- Transactions
+- Clearance
+- Administration
+- Help & Account
+
+Menu visibility still follows the existing role permissions.

@@ -1,0 +1,4 @@
+ST Asset Management System — Release 1.6.0 PHP validation
+
+All PHP files were checked with php -l during the non-technical user experience pass.
+Result: PASS

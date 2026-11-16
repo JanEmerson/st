@@ -1,0 +1,36 @@
+ST Asset Management System - Final Polish 1.2.0
+
+Finalized items:
+- HTTP/LAN QR Base URL can be configured from Settings.
+- Fresh-install database defaults QR Base URL to http://172.18.20.100/st; change it in Settings if the PC IP changes.
+- Default first Administrator: username admin / password admin123. Change it immediately after first login.
+- Added CSRF protection to authenticated state-changing forms and login.
+- Hardened PHP session cookies for localhost/LAN and HTTPS compatibility.
+- Added security response headers to authenticated pages and public QR verification.
+- Added PHP execution protection to uploads/assets, uploads/app, and uploads/avatars.
+- Public QR verification does not expose the current employee's name; authenticated users are redirected to the normal asset page.
+- Legacy Excel import updates existing assets, adds new assets, synchronizes Users Reference data, supports Role, and records assignment/return history when accountability changes.
+- The current Administrator cannot be deactivated or demoted by an Excel Users Reference import.
+- Existing data is never deleted just because an asset/user is absent from an Excel import.
+
+Fresh installation:
+1. Import database/st_db_install.sql into a NEW database.
+2. Copy the st folder to C:\xampp\htdocs\st.
+3. Login with admin / admin123.
+4. Immediately change the password.
+5. Open Settings > QR Code / LAN Settings and confirm the phone-reachable URL.
+
+Existing installation:
+- Do NOT import the fresh-install SQL because it drops tables.
+- Replace the application files with this final build.
+- Keep your existing database and uploads.
+- Confirm Settings > QR Code / LAN Settings.
+
+EXCEL IMPORT/EXPORT FINAL POLISH
+- Complete asset workbook fields are supported for import/update.
+- Required asset cells are highlighted pink/red.
+- Optional cells preserve existing values on asset-code updates.
+- Dropdown lists and Reference Lists sheet guide valid values.
+- Linked Items / Loose Tools can be imported and updated using the Linked Items worksheet.
+- Users Reference includes Role and Status and can update/create users according to the import rules.
+- Import never deletes assets, linked items, or users merely because a row is absent from the workbook.

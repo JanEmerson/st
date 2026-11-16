@@ -1,0 +1,22 @@
+ST Asset Management System - Security & Reliability Review 1.6.1
+
+Completed in this review:
+- Corrected CSRF validation placement in assignment, transfer, and turnover save endpoints.
+- Added CSRF validation to asset editing POST operations, including image deletion.
+- Added CSRF validation to Excel/CSV asset import processing.
+- Added CSRF validation to Settings POST actions.
+- Re-ran PHP and JavaScript syntax validation after changes.
+
+Security checks performed:
+- Prepared statements are used for application database writes and user-controlled lookup values inspected during this review.
+- Session cookies use HttpOnly, SameSite=Lax, strict session mode, and cookie-only sessions.
+- Uploaded asset images are checked with getimagesize(), MIME allow-listing, randomized server filenames, and a size limit.
+- Maintenance attachments use server-side MIME validation and randomized filenames.
+- Imported spreadsheet text is protected against common formula-injection prefixes.
+
+Important deployment checks still required on the actual XAMPP/MySQL machine:
+1. Import the master database script into a fresh MySQL/MariaDB instance.
+2. Log in with the fresh-install administrator and immediately change the password.
+3. Test assignment, transfer, turnover, maintenance, image upload/delete, import/export, settings, and login from a browser.
+4. Verify the uploads directory is not configured to execute PHP scripts.
+5. Back up the database before production use.
