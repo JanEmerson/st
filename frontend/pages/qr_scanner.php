@@ -17,27 +17,12 @@ $scan_base_url = app_base_url($conn);
 $host = strtolower($_SERVER["HTTP_HOST"] ?? "");
 $isLocalhostHost = in_array($host, ["localhost", "127.0.0.1", "[::1]", "::1"], true) || preg_match('/^localhost(:\d+)?$/', $host) === 1;
 
-/* QR scanning is intentionally mobile-only. Keep the feature out of the
- * desktop navigation and also protect against a direct desktop URL visit. */
-$userAgent = strtolower($_SERVER["HTTP_USER_AGENT"] ?? "");
-$isMobileDevice = (bool) preg_match(
-    '/android|iphone|ipod|ipad|iemobile|opera mini|mobile|webos|blackberry|windows phone/',
-    $userAgent
-);
 ?>
-
-<?php if (!$isMobileDevice): ?>
-    <div class="detail-card qr-desktop-hidden-message" role="status">
-        <h2>QR Scanner</h2>
-        <p class="secondary-text">The QR Scanner is available on mobile devices only.</p>
-        <p class="secondary-text">Open ST on your mobile device to access the QR Scanner automatically.</p>
-    </div>
-<?php else: ?>
 
 <div class="page-header">
     <div>
         <h2>Scan Asset QR Code</h2>
-        <p>Use your mobile device camera to scan an ST asset QR label.</p>
+        <p>Scan an asset QR label with your phone camera, upload a QR image, or enter a scanned code.</p>
     </div>
 </div>
 
@@ -53,21 +38,24 @@ $isMobileDevice = (bool) preg_match(
         <div class="qr-camera-placeholder" id="qrCameraPlaceholder">
             <div class="qr-camera-icon" aria-hidden="true">▣</div>
             <strong>Scan an ST Asset QR Code</strong>
-            <span>Tap the button below to open your phone camera.</span>
+            <span>Take a QR photo on your phone, or upload an image on your PC.</span>
         </div>
 
         <div id="qrScannerStatus" class="secondary-text" role="status" aria-live="polite">
             Ready to scan an ST asset QR code.
         </div>
 
-        <video id="qrCameraVideo" playsinline muted autoplay hidden></video>
+
 
         <div class="qr-scanner-actions">
             <button id="scanQrCamera" type="button" class="btn btn-primary">Scan QR Code</button>
-            <button id="scanLiveCamera" type="button" class="btn btn-secondary">Use Live Camera</button>
             <button id="qrImageButton" type="button" class="btn btn-secondary">Choose QR Photo</button>
         </div>
 
+        <form id="qrManualForm" class="qr-manual-form" autocomplete="off">
+            <label for="qrManualCode">Scanned QR text or token</label>
+            <div class="qr-manual-row"><input id="qrManualCode" type="text" placeholder="Paste or scan QR text" aria-label="QR text or token"><button class="btn btn-secondary" type="submit">Open Asset</button></div>
+        </form>
         <!-- capture=environment is intentional: on mobile this opens the rear camera
              without requiring getUserMedia/HTTPS. This is the reliable approach for
              an ST installation accessed over normal HTTP/LAN. -->
@@ -76,22 +64,10 @@ $isMobileDevice = (bool) preg_match(
     </div>
 
     <div class="qr-scanner-help">
-        <h3>How to Scan</h3>
-        <ol>
-            <li>Tap <strong>Scan QR Code</strong>.</li>
-            <li>Allow the phone camera if your browser asks.</li>
-            <li>Point the rear camera at the ST asset QR label.</li>
-            <li>Take the photo. ST will read the QR code automatically.</li>
-            <li>The matching asset page will open.</li>
-        </ol>
-        <p class="secondary-text">
-            ST keeps the current application address when opening the scanned asset,
-            so the QR code works with the same host/IP you used to open ST on the phone.
-        </p>
+        <p class="secondary-text">On your phone, tap <strong>Scan QR Code</strong> and take a clear photo. On the PC, paste a scanned QR value or choose a QR image. No online QR service is used.</p>
+        <p class="secondary-text">For phone access, the phone must already be able to open ST using your PC's local network address. This update does not change XAMPP settings or install a phone-to-PC receiver.</p>
     </div>
 </div>
-
-<?php endif; ?>
 
 <style>
 .qr-desktop-hidden-message { max-width: 760px; margin: 40px auto; }
@@ -118,9 +94,9 @@ $isMobileDevice = (bool) preg_match(
     border-radius:12px;
     border:1px solid rgba(57,65,73,.25);
 }
-.qr-scanner-help ol { margin:10px 0 12px 20px; padding:0; }
+.qr-manual-form{display:flex;flex-direction:column;gap:8px}.qr-manual-row{display:flex;gap:8px}.qr-manual-row input{flex:1;min-width:0;padding:10px;border:1px solid #9ba4ad;border-radius:7px}.qr-scanner-help ol { margin:10px 0 12px 20px; padding:0; }
 @media (max-width:640px) {
-    .qr-scanner-actions { flex-direction:column; }
+    .qr-scanner-actions,.qr-manual-row { flex-direction:column; }
     .qr-scanner-actions .btn { width:100%; min-height:48px; }
     .qr-camera-placeholder { min-height:220px; }
 }
@@ -137,46 +113,25 @@ $isMobileDevice = (bool) preg_match(
     if (!window.jsQR) {
         const status = document.getElementById("qrScannerStatus");
         if (status) {
-            status.textContent = "The QR scanner could not load. Please refresh the page and try again.";
+            status.textContent = "The QR image decoder could not load. Manual code entry remains available.";
             status.style.color = "#c0392b";
         }
-        return;
     }
 
     const status = document.getElementById("qrScannerStatus");
     const cameraButton = document.getElementById("scanQrCamera");
-    const liveCameraButton = document.getElementById("scanLiveCamera");
+    const manualForm = document.getElementById("qrManualForm");
+    const manualCode = document.getElementById("qrManualCode");
     const imageButton = document.getElementById("qrImageButton");
     const cameraInput = document.getElementById("qrCameraInput");
     const imageInput = document.getElementById("qrImageInput");
-    const video = document.getElementById("qrCameraVideo");
+
 
     if (!status || !cameraButton || !cameraInput) return;
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d", { willReadFrequently: true });
     let opening = false;
-    let videoStream = null;
-    let scanRaf = null;
-
-    function stopVideoScan() {
-        if (scanRaf) {
-            cancelAnimationFrame(scanRaf);
-            scanRaf = null;
-        }
-
-        if (videoStream) {
-            videoStream.getTracks().forEach((track) => track.stop());
-            videoStream = null;
-        }
-
-        if (video) {
-            video.pause();
-            video.srcObject = null;
-            video.hidden = true;
-        }
-    }
-
     function setStatus(message, error = false) {
         status.textContent = message;
         status.style.color = error ? "#c0392b" : "";
@@ -230,79 +185,6 @@ $isMobileDevice = (bool) preg_match(
         const target = new URL("/st/asset_scan.php", window.location.origin);
         target.searchParams.set("token", token);
         window.location.href = target.href;
-    }
-
-    function decodeQrFromCanvas() {
-        if (!context || !video || video.videoWidth <= 0 || video.videoHeight <= 0) {
-            return false;
-        }
-
-        const width = video.videoWidth;
-        const height = video.videoHeight;
-        canvas.width = width;
-        canvas.height = height;
-        context.drawImage(video, 0, 0, width, height);
-
-        const imageData = context.getImageData(0, 0, width, height);
-        const result = window.jsQR(imageData.data, width, height, { inversionAttempts: "attemptBoth" });
-
-        if (result && result.data) {
-            stopVideoScan();
-            openAsset(result.data);
-            return true;
-        }
-
-        return false;
-    }
-
-    function startLiveCamera() {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            setStatus("This browser does not support live camera access. Please choose a QR photo instead.", true);
-            return;
-        }
-
-        const isLocalhost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
-        if (!window.isSecureContext && !isLocalhost) {
-            setStatus("The live camera is only available on localhost or HTTPS. Please choose a photo from your phone camera instead.", true);
-            return;
-        }
-
-        setStatus("Opening live camera…");
-
-        navigator.mediaDevices.getUserMedia({
-            video: {
-                facingMode: { ideal: "environment" },
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            },
-            audio: false
-        }).then((stream) => {
-            videoStream = stream;
-            if (video) {
-                video.srcObject = stream;
-                video.playsInline = true;
-                video.muted = true;
-                video.hidden = false;
-                video.play().catch(() => {});
-            }
-
-            function scanFrame() {
-                if (opening) {
-                    return;
-                }
-
-                if (video && !video.hidden && decodeQrFromCanvas()) {
-                    return;
-                }
-
-                scanRaf = requestAnimationFrame(scanFrame);
-            }
-
-            scanRaf = requestAnimationFrame(scanFrame);
-            setStatus("Point your camera at the ST asset QR code.");
-        }).catch(() => {
-            setStatus("Camera access was blocked. Please use the QR photo option instead.", true);
-        });
     }
 
     async function decodeImage(file) {
@@ -391,29 +273,24 @@ $isMobileDevice = (bool) preg_match(
 
     cameraButton.addEventListener("click", () => {
         opening = false;
-        stopVideoScan();
         cameraInput.value = "";
         cameraInput.click();
     });
 
-    if (liveCameraButton) {
-        liveCameraButton.addEventListener("click", () => {
-            opening = false;
-            stopVideoScan();
-            startLiveCamera();
-        });
-    }
+    if (manualForm) manualForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        opening = false;
+        openAsset(manualCode.value);
+    });
 
     imageButton.addEventListener("click", () => {
         opening = false;
-        stopVideoScan();
         imageInput.value = "";
         imageInput.click();
     });
 
     cameraInput.addEventListener("change", () => decodeImage(cameraInput.files && cameraInput.files[0]));
     imageInput.addEventListener("change", () => decodeImage(imageInput.files && imageInput.files[0]));
-    window.addEventListener("beforeunload", stopVideoScan);
 })();
 </script>
 
