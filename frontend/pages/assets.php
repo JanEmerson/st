@@ -239,6 +239,8 @@ $error = $_GET["error"] ?? "";
                 + Add Asset
             </a>
 
+            <a href="asset_qr_print.php" class="btn btn-secondary">Print QR Labels</a>
+
             <a
                 href="asset_import_export.php"
                 class="btn btn-secondary"

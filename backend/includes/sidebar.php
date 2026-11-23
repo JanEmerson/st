@@ -18,8 +18,8 @@ $isMobileDevice = (bool) preg_match(
 
 $sectionPages = [
     "overview" => ["index.php"],
-    "asset-management" => ["assets.php", "qr_scanner.php", "categories.php", "asset_import_export.php"],
-    "transactions" => ["assignments.php", "transfers.php", "turnovers.php", "maintenance.php", "maintenance_add.php", "maintenance_edit.php", "maintenance_attachment.php", "history.php"],
+    "asset-management" => ["assets.php", "qr_scanner.php", "categories.php", "asset_import_export.php", "physical_inventory.php", "print_center.php"],
+    "transactions" => ["assignments.php", "transfers.php", "turnovers.php", "maintenance.php", "maintenance_add.php", "maintenance_edit.php", "maintenance_attachment.php", "history.php", "asset_alerts.php"],
     "clearance" => ["clearance.php"],
     "administration" => ["users.php", "settings.php"],
     "help-account" => ["user_guide.php", "profile.php"],
@@ -79,6 +79,8 @@ function sidebar_section_active(string $key, string $currentPage, array $section
                 <span class="sidebar-section-chevron" aria-hidden="true">⌄</span>
             </button>
             <div class="sidebar-group-items" id="sidebar-group-asset-management">
+                <a href="/st/frontend/pages/physical_inventory.php" class="<?= $currentPage === "physical_inventory.php" ? "active" : "" ?>">Physical Inventory</a>
+                <a href="/st/frontend/pages/print_center.php" class="<?= $currentPage === "print_center.php" ? "active" : "" ?>">Print Center</a>
                 <a href="/st/frontend/pages/assets.php" class="<?= $currentPage === "assets.php" ? "active" : "" ?>">Assets</a>
                 <?php if ($isMobileDevice): ?>
                     <a href="/st/frontend/pages/qr_scanner.php" class="<?= $currentPage === "qr_scanner.php" ? "active" : "" ?>">QR Scanner</a>
@@ -106,7 +108,8 @@ function sidebar_section_active(string $key, string $currentPage, array $section
                     <a href="/st/frontend/pages/assignments.php" class="<?= $currentPage === "assignments.php" ? "active" : "" ?>">Assignments</a>
                     <a href="/st/frontend/pages/transfers.php" class="<?= $currentPage === "transfers.php" ? "active" : "" ?>">Transfers</a>
                     <a href="/st/frontend/pages/turnovers.php" class="<?= $currentPage === "turnovers.php" ? "active" : "" ?>">Turnovers</a>
-                    <a href="/st/frontend/pages/maintenance.php" class="<?= in_array($currentPage, ["maintenance.php", "maintenance_add.php", "maintenance_edit.php"], true) ? "active" : "" ?>">Maintenance</a>
+                    <a href="/st/frontend/pages/asset_alerts.php" class="<?= $currentPage === "asset_alerts.php" ? "active" : "" ?>">Asset Alerts</a>
+                <a href="/st/frontend/pages/maintenance.php" class="<?= in_array($currentPage, ["maintenance.php", "maintenance_add.php", "maintenance_edit.php"], true) ? "active" : "" ?>">Maintenance</a>
                 <?php endif; ?>
                 <a href="/st/frontend/pages/history.php" class="<?= $currentPage === "history.php" ? "active" : "" ?>">History</a>
             </div>
@@ -142,6 +145,7 @@ function sidebar_section_active(string $key, string $currentPage, array $section
                 </button>
                 <div class="sidebar-group-items" id="sidebar-group-administration">
                     <a href="/st/frontend/pages/users.php" class="<?= $currentPage === "users.php" ? "active" : "" ?>">Users</a>
+                    <a href="/st/frontend/pages/local_backup.php" class="<?= $currentPage === "local_backup.php" ? "active" : "" ?>">Local Backup</a>
                     <a href="/st/frontend/pages/settings.php" class="<?= $currentPage === "settings.php" ? "active" : "" ?>">Settings</a>
                 </div>
             </section>
